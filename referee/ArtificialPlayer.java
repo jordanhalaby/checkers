@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.rmi.*;
 import java.net.*;
+import java.util.Arrays;
 
 
 /**
@@ -187,7 +188,7 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     System.out.println(boardToString(brd));
     */
     
-    for(int i=0; i<children.size(); i++){
+    for(int i=0; i < children.size(); i++){
       System.out.println();
       System.out.println();
       ArrayList<Square> child = children.get(i);
@@ -236,24 +237,28 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
   
   
       ArrayList<ArrayList<Square>> temp = new ArrayList();
-      
+      //System.out.println("state size: " + state.size());
       for(int i=0; i < state.size(); i++) {
          
          int curSpot = state.get(i).index;
          String loc = board.getOpenSquares(wb, curSpot);//1 -white 2-black
-         
+         //System.out.println("loc: " + loc);
          if(!loc.equals("")){
             
            // System.out.println(curSpot + ": " + loc);
             String SetDelimit = ";;";
             String[] setMoves = loc.split(SetDelimit);
             
+            //System.out.println(Arrays.deepToString(setMoves));
+            //System.out.println("setMoves Length:" + setMoves.length); 
             for(int j=0; j<setMoves.length; j++){
                ArrayList<Square> moveList = move(setMoves[j],state);
+               //System.out.println(moveList.get(j).index); 
+               //System.out.println(moveList.get(j).piece);
                temp.add(moveList);
-               moveList = null;
+               //moveList = null;
                
-               printArrayList(temp);
+               //printArrayList(temp);
             }
          }
       }
@@ -263,15 +268,16 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
       // forea loc generate board state
       return temp;
    }
+   
    private static void printArrayList(ArrayList<ArrayList<Square>> temp){
          for(int i=0; i < temp.size(); i++){
             for(int k=0; k < temp.get(i).size(); k++){
                System.out.println(temp.get(i).get(k).piece);
             }
             System.out.println("*****************************************");
-         }
-         
+         }     
    }
+   
    public static ArrayList<Square> move(String pair, ArrayList<Square> board){
       ArrayList<Square> ret = new ArrayList<Square>();
       ret = board;
