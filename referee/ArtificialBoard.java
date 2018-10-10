@@ -12,22 +12,9 @@ public class ArtificialBoard{
    
    
    ArrayList<Square> board = new ArrayList();
-   public ArtificialBoard(){
-      
-      for(int i=0; i<=32; i++){
-         Square sq = new Square();
-         if(i < 13){
-            sq.piece = 100; // black pawn
-         }
-         else if(i > 20){
-            sq.piece = -100; // white pawn
-         }
-         else{
-            sq.piece = i;
-         }
-         sq.index= i;
-         board.add(sq);
-      }
+   //Generate initial board
+   public ArtificialBoard(ArrayList<Square> list){
+      board = list;
    }
    public int getIndex(int row, int col){
       int temp =0;
@@ -81,6 +68,8 @@ public class ArtificialBoard{
       
       int newPiece;
       
+      String PairDelimit = "--";
+      String SetDelimit = ";;";
       String ret = "";
       
       if(currPiece == -100){
@@ -96,7 +85,7 @@ public class ArtificialBoard{
                   newPiece = board.get(newIndexLeft).piece;
                   
                   if(newPiece != -100 && newPiece != 100){
-                     ret = ret + index + "||" + newIndexLeft + "--";
+                     ret = ret + index + PairDelimit + newIndexLeft + SetDelimit;
                      //System.out.println(newIndexLeft);
                   }
                }
@@ -110,7 +99,7 @@ public class ArtificialBoard{
                      
                      if(newPiece != -100 && newPiece != 100){
                         //System.out.println(newIndexRight);
-                        ret = ret + index + "||" + newIndexRight + "--";
+                        ret = ret + index + PairDelimit + newIndexRight + SetDelimit;
                      }
                }
                else{
@@ -136,7 +125,7 @@ public class ArtificialBoard{
                   newPiece = board.get(newIndexLeft).piece;
                   
                   if(newPiece != -100 && newPiece != 100){
-                     ret = ret + index + "||" + newIndexLeft + "--";
+                     ret = ret + index + PairDelimit + newIndexLeft + SetDelimit;
                      //System.out.println(newIndexLeft);
                   }
                }
@@ -150,7 +139,7 @@ public class ArtificialBoard{
                      
                      if(newPiece != -100 && newPiece != 100){
                         //System.out.println(newIndexRight);
-                        ret = ret + index + "||" + newIndexRight + "--";
+                        ret = ret + index + PairDelimit + newIndexRight + SetDelimit;
                      }
                }
                else{

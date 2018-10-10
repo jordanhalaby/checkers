@@ -26,7 +26,9 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
   public static final int WHITE_KING = 2000;
   public static final int BLACK_PAWN = -1000;
   public static final int BLACK_KING = -2000;
-
+   
+  public static int wb;
+   
   public ArtificialPlayer(String name) throws java.rmi.RemoteException {
     this.name = name;
   }
@@ -136,17 +138,33 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
    * <code>java -Djava.security.policy=permit.txt referee.HumanPlayer 1 "Fraser"</code>
    */
   public static void main (String[] args) {
+    ArrayList<Square> StartList = new ArrayList();
     
+     for(int i=0; i<=32; i++){
+         Square sq = new Square();
+         if(i < 13){
+            sq.piece = 100; // black pawn
+         }
+         else if(i > 20){
+            sq.piece = -100; // white pawn
+         }
+         else{
+            sq.piece = i;
+         }
+         sq.index= i;
+         StartList.add(sq);
+      }
+
     
     
     // player 2 is black;
     // player 1 is white;
     name = "jordan";
     String playerName = "jordan Halaby";
-    int wb = 1;
+    wb = 1;
     String playerRegistration = "first";
     
-    ArtificialBoard ourBoard = new ArtificialBoard();
+    ArtificialBoard ourBoard = new ArtificialBoard(StartList);
     int[] brdElements = ourBoard.display();
     System.out.println(boardToString(brdElements));
     
@@ -158,8 +176,28 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     
     ArrayList<Square> state = ourBoard.getBoard();    
     
-    generate(state, ourBoard);
+    ArrayList<ArrayList<Square>> children = generate(state, ourBoard);
+    /*
+    System.out.println();
+    ArrayList<Square> temp = move("21--17", state); 
     
+    ArtificialBoard tempBoard = new ArtificialBoard(temp);
+    
+    int[] brd = tempBoard.display();
+    System.out.println(boardToString(brd));
+    */
+    
+    for(int i=0; i<children.size(); i++){
+      System.out.println();
+      System.out.println();
+      ArrayList<Square> child = children.get(i);
+      for(int k=0; k<child.size(); k++){
+        ///  System.out.println(child.get(k).piece);
+      }
+      ArtificialBoard brd = new ArtificialBoard(child);
+      int[] tointboard = brd.display();
+        System.out.println(boardToString(tointboard));
+    }
     /*
     try {
       ArtificialPlayer p = new ArtificialPlayer(playerName);
@@ -194,13 +232,82 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     return name;
   }
 
-   public static void generate(ArrayList<Square> state, ArtificialBoard board){
-      for(int i=0; i<state.size(); i++){
+  public static ArrayList<ArrayList<Square>> generate(ArrayList<Square> state, ArtificialBoard board){
+  
+  
+      ArrayList<ArrayList<Square>> temp = new ArrayList();
+      
+      for(int i=0; i < state.size(); i++) {
+         
          int curSpot = state.get(i).index;
-         String loc = board.getOpenSquares(1, curSpot);
+         String loc = board.getOpenSquares(wb, curSpot);//1 -white 2-black
+         
          if(!loc.equals("")){
-            System.out.println(curSpot + ": " + loc);
+            
+           // System.out.println(curSpot + ": " + loc);
+            String SetDelimit = ";;";
+            String[] setMoves = loc.split(SetDelimit);
+            
+            for(int j=0; j<setMoves.length; j++){
+               ArrayList<Square> moveList = move(setMoves[j],state);
+               temp.add(moveList);
+               moveList = null;
+               
+               printArrayList(temp);
+            }
          }
       }
+
+      //printArrayList(temp);
+   
+      // forea loc generate board state
+      return temp;
+   }
+   private static void printArrayList(ArrayList<ArrayList<Square>> temp){
+         for(int i=0; i < temp.size(); i++){
+            for(int k=0; k < temp.get(i).size(); k++){
+               System.out.println(temp.get(i).get(k).piece);
+            }
+            System.out.println("*****************************************");
+         }
+         
+   }
+   public static ArrayList<Square> move(String pair, ArrayList<Square> board){
+      ArrayList<Square> ret = new ArrayList<Square>();
+      ret = board;
+      String PairDelimit = "--";
+      System.out.println(pair);
+      String[] comps = pair.split(PairDelimit);
+      
+      int piece;
+      
+      if(wb == 1){
+         piece = -100;
+      }
+      else{
+         piece = 100;
+      }
+      
+      int []pairArray = new int[2];
+      
+      for(int i = 0; i < comps.length; i++){
+         pairArray[i] = Integer.parseInt(comps[i]);
+         //System.out.println(pairArray[i]);
+      }
+      /*
+      Setting square on board to white.
+      Then setting  old square to index.
+      */
+      Square sq;
+      sq = ret.get(pairArray[1]);
+      sq.piece = piece;
+      ret.set(pairArray[1], sq);
+      
+      sq = ret.get(pairArray[0]);
+      sq.piece = pairArray[0];
+      ret.set(pairArray[0], sq);
+      
+      //System.out.println(arrOfStr[arrOfStr.length-1]);    
+      return ret;
    }
 }
