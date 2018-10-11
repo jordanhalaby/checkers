@@ -165,45 +165,8 @@ import java.net.*;
     
     ArrayList<Square> state = startBoard.getBoard();    
     
-    ArrayList<String> children = generate(state, startBoard);
-   
-    ArrayList<ArtificialBoard> reachable = new ArrayList<ArtificialBoard>();
+    ArrayList<ArtificialBoard> reachable = ReachableBoards(state, startBoard, wb);
     
-    
-    for(int c=0; c <children.size(); c++){
-         String child = children.get(c);
-         String[] pieces = child.split("\\W+");
-         
-         ArrayList<Square> Board = new ArrayList<Square>();
-         Square dummy = new Square();
-         dummy.index =0;
-         dummy.piece =0;
-         Board.add(dummy);
-         for(int p=1; p<pieces.length; p++){
-            String curPiece = pieces[p];
-            int temp;
-            if(curPiece.equals("w")){
-               temp = -100;
-            }
-            else if(curPiece.equals("b")){
-               temp = 100;
-            }
-            else{
-               temp = p;
-            }
-            //int tok = Integer.parseInt(curPiece);
-            
-            Square sq = new Square();
-            sq.index=p;
-            sq.piece=temp;
-            Board.add(sq);
-            
-         }
-         
-         ArtificialBoard tempBoard = new ArtificialBoard(Board);
-         reachable.add(tempBoard);
-         
-    }
     
     for(int i=0; i<reachable.size(); i++){
        ArtificialBoard curBoard = reachable.get(i);
@@ -244,6 +207,49 @@ import java.net.*;
    */
   public String getName() throws java.rmi.RemoteException {
     return name;
+  }
+  public static ArrayList<ArtificialBoard> ReachableBoards(ArrayList<Square> state, ArtificialBoard board, int wb){
+  ArrayList<String> children = generate(state, board);
+   
+    ArrayList<ArtificialBoard> reachable = new ArrayList<ArtificialBoard>();
+    
+    
+    for(int c=0; c <children.size(); c++){
+         String child = children.get(c);
+         String[] pieces = child.split("\\W+");
+         
+         ArrayList<Square> Board = new ArrayList<Square>();
+         Square dummy = new Square();
+         dummy.index =0;
+         dummy.piece =0;
+         Board.add(dummy);
+         for(int p=1; p<pieces.length; p++){
+            String curPiece = pieces[p];
+            int temp;
+            if(curPiece.equals("w")){
+               temp = -100;
+            }
+            else if(curPiece.equals("b")){
+               temp = 100;
+            }
+            else{
+               temp = p;
+            }
+            //int tok = Integer.parseInt(curPiece);
+            
+            Square sq = new Square();
+            sq.index=p;
+            sq.piece=temp;
+            Board.add(sq);
+            
+         }
+         
+         ArtificialBoard tempBoard = new ArtificialBoard(Board);
+         reachable.add(tempBoard);
+         
+    }
+    
+    return reachable;
   }
     public static ArrayList<String> generate(ArrayList<Square> state, ArtificialBoard board){
       int size = state.size();
