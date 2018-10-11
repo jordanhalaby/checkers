@@ -84,6 +84,19 @@ public class ArtificialBoard{
                   int newIndexLeft = getIndex(newRow, colLeft);
                   newPiece = board.get(newIndexLeft).piece;
                   
+                  if(newPiece == 100){
+                     int newRowJump = newRow-1;
+                     int newColLeftJump = colLeft-1;
+                     
+                     if(newRowJump >=0 && newColLeftJump >=0){
+                        int newIndexJump = getIndex(newRowJump, newColLeftJump);
+                        int newPieceJump = board.get(newIndexJump).piece;
+                        
+                        if(newPieceJump != -100 && newPieceJump != 100){
+                           ret = ret + index + PairDelimit + newIndexJump + SetDelimit;
+                        }
+                     }
+                  }
                   if(newPiece != -100 && newPiece != 100){
                      ret = ret + index + PairDelimit + newIndexLeft + SetDelimit;
                      //System.out.println(newIndexLeft);
@@ -96,8 +109,21 @@ public class ArtificialBoard{
                if(colRight <= 7){
                   int newIndexRight = getIndex(newRow, colRight);
                     newPiece = board.get(newIndexRight).piece;
+                    
+                     if(newPiece == 100){
+                        int newRowJump = newRow-1;
+                        int newColRightJump = colRight+1;
                      
-                     if(newPiece != -100 && newPiece != 100){
+                         if(newRowJump >=0 && newColRightJump <=7){
+                            int newIndexJump = getIndex(newRowJump, newColRightJump);
+                            int newPieceJump = board.get(newIndexJump).piece;
+                        
+                            if(newPieceJump != -100 && newPieceJump != 100){
+                               ret = ret + index + PairDelimit + newIndexJump + SetDelimit;
+                            }
+                           }
+                      }
+                    if(newPiece != -100 && newPiece != 100){
                         //System.out.println(newIndexRight);
                         ret = ret + index + PairDelimit + newIndexRight + SetDelimit;
                      }
@@ -124,6 +150,23 @@ public class ArtificialBoard{
                   int newIndexLeft = getIndex(newRow, colLeft);
                   newPiece = board.get(newIndexLeft).piece;
                   
+                  if(newPiece == -100){
+                     int newRowJump = newRow +1;
+                     int newColLeftJump = colLeft -1;
+                     
+                     if(newColLeftJump >=0){
+                        int newIndexJump = getIndex(newRowJump, newColLeftJump);
+                        int newPieceJump = board.get(newIndexJump).piece;
+                        
+                        if(newPieceJump != -100 && newPieceJump != 100){
+                               ret = ret + index + PairDelimit + newIndexJump + SetDelimit;
+                        }
+                        if(newPiece != -100 && newPiece != 100){
+                           ret = ret + index + PairDelimit + newIndexLeft + SetDelimit;
+                           //System.out.println(newIndexLeft);
+                        }
+                     }
+                  }
                   if(newPiece != -100 && newPiece != 100){
                      ret = ret + index + PairDelimit + newIndexLeft + SetDelimit;
                      //System.out.println(newIndexLeft);
@@ -136,6 +179,25 @@ public class ArtificialBoard{
                if(colRight <= 7){
                   int newIndexRight = getIndex(newRow, colRight);
                     newPiece = board.get(newIndexRight).piece;
+                    
+                     if(newPiece == -100){
+                        int newRowJump = newRow +1;
+                        int newColRightJump = colLeft +1;
+                        
+                        if(newColRightJump <=7){
+                           int newIndexJump = getIndex(newRowJump, newColRightJump);
+                           int newPieceJump = board.get(newIndexJump).piece;
+                           
+                           if(newPieceJump != -100 && newPieceJump != 100){
+                                  ret = ret + index + PairDelimit + newIndexJump + SetDelimit;
+                           }
+                           
+                           if(newPiece != -100 && newPiece != 100){
+                              ret = ret + index + PairDelimit + newIndexRight + SetDelimit;
+                              //System.out.println(newIndexLeft);
+                           }
+                        }
+                     }
                      
                      if(newPiece != -100 && newPiece != 100){
                         //System.out.println(newIndexRight);
