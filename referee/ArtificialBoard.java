@@ -4,18 +4,36 @@ import java.util.*;
 
 public class ArtificialBoard{
 
-   public int numRow = 8;
-   public int numCol = 8;
-   
+//   public int numRow = 8;
+//   public int numCol = 8;
    ArtificialBoard parent;
-   
-   
-   
    ArrayList<Square> board = new ArrayList();
-   //Generate initial board
-   public ArtificialBoard(ArrayList<Square> list){
-      board = list;
+   
+   public ArtificialBoard(){
+      board.add(new Square());
+      for(int i=1; i<=32; i++){
+          //System.out.println(i);
+         Square sq = new Square();
+         if(i < 13){
+            sq.piece = 100; // black pawn
+         }
+         else if(i > 20){
+            sq.piece = -100; // white pawn
+         }
+         else{
+            sq.piece = i;
+         }
+         sq.index= i;
+         board.add(sq);
+      }
+      
+//      for(int i=0; i<=32; i++){
+//          System.out.println("Index: "+board.get(i).index);
+//         System.out.println("Piece: " + board.get(i).piece);
+//      }
+      
    }
+   
    public int getIndex(int row, int col){
       int temp =0;
       if(row % 2 == 0){
@@ -26,6 +44,7 @@ public class ArtificialBoard{
       }
       return (row+1)*4 -temp;
    }
+   
    public int getRow(int index){
       return (int)(Math.ceil(index/4.0)) -1;
    }
@@ -46,7 +65,8 @@ public class ArtificialBoard{
    }
    
    public int[] display(){
-      int[] places = new int[64];
+      int[] places = new int[33];
+
       for(int i =0; i < board.size(); i++){
          places[i] = board.get(i).piece;
       }
@@ -99,7 +119,7 @@ public class ArtificialBoard{
                      
                      if(newPiece != -100 && newPiece != 100){
                         //System.out.println(newIndexRight);
-                        ret = ret + index + PairDelimit + newIndexRight + SetDelimit;
+                        ret = ret + index + PairDelimit  + newIndexRight + SetDelimit;
                      }
                }
                else{
