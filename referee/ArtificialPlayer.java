@@ -167,13 +167,52 @@ import java.net.*;
     
     ArrayList<String> children = generate(state, startBoard);
    
+    ArrayList<ArtificialBoard> reachable = new ArrayList<ArtificialBoard>();
+    
     
     for(int c=0; c <children.size(); c++){
-      String child = children.get(c);
-         System.out.println(child);
-         System.out.println();
-         System.out.println();
+         String child = children.get(c);
+         String[] pieces = child.split("\\W+");
+         
+         ArrayList<Square> Board = new ArrayList<Square>();
+         Square dummy = new Square();
+         dummy.index =0;
+         dummy.piece =0;
+         Board.add(dummy);
+         for(int p=1; p<pieces.length; p++){
+            String curPiece = pieces[p];
+            int temp;
+            if(curPiece.equals("w")){
+               temp = -100;
+            }
+            else if(curPiece.equals("b")){
+               temp = 100;
+            }
+            else{
+               temp = p;
+            }
+            //int tok = Integer.parseInt(curPiece);
+            
+            Square sq = new Square();
+            sq.index=p;
+            sq.piece=temp;
+            Board.add(sq);
+            
          }
+         
+         ArtificialBoard tempBoard = new ArtificialBoard(Board);
+         reachable.add(tempBoard);
+         
+    }
+    
+    for(int i=0; i<reachable.size(); i++){
+       ArtificialBoard curBoard = reachable.get(i);
+       brdElements = curBoard.display();
+       System.out.println(boardToString(brdElements));
+       System.out.println();
+       System.out.println();
+
+    }
     /*
     try {
       ArtificialPlayer p = new ArtificialPlayer(playerName);
@@ -224,7 +263,6 @@ import java.net.*;
          int curSpot = state.get(i).index;
          String loc = board.getOpenSquares(wb, curSpot);
          if(!loc.equals("")){
-            System.out.println(curSpot + ": " + loc);
             
             String pairs[] = loc.split(";;");
             
@@ -250,8 +288,6 @@ import java.net.*;
                
                String layout = boardToString(myState);
                //System.out.println(layout);
-               System.out.println();
-               System.out.println();
                
                ret.add(layout);
                counter++;
