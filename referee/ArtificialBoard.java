@@ -60,7 +60,7 @@ public class ArtificialBoard{
    // white for testing
    public String getOpenSquares(int wb, int index){
       // check if index space is white
-      System.out.println("wb, index ---> " + wb + ", " + index );
+      
       int currPiece = board.get(index).piece;
       
       int row = getRow(index);
