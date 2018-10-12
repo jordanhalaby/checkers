@@ -17,15 +17,16 @@ import java.net.*;
  */
  public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implements referee.Player {
   private static String name;
-   public static final int NO_PIECE = 0;
+  public static final int NO_PIECE = 0;
   public static final int WHITE_PAWN = 1000;
   public static final int WHITE_KING = 2000;
   public static final int BLACK_PAWN = -1000;
   public static final int BLACK_KING = -2000;
   
   public static int wb;
-  
-   public ArtificialPlayer(String name) throws java.rmi.RemoteException {
+  public static int MAX_PLY = 2;//max ply
+  public static int PLAYER_MAX = 1;
+  public ArtificialPlayer(String name) throws java.rmi.RemoteException {
     this.name = name;
   }
    /**
@@ -168,14 +169,19 @@ import java.net.*;
     ArrayList<ArtificialBoard> reachable = ReachableBoards(state, startBoard, wb);
     
     
-    for(int i=0; i<reachable.size(); i++){
-       ArtificialBoard curBoard = reachable.get(i);
-       brdElements = curBoard.display();
-       System.out.println(boardToString(brdElements));
-       System.out.println();
-       System.out.println();
-    }
     
+//    for(int i=0; i<reachable.size(); i++){
+//       ArtificialBoard curBoard = reachable.get(i);
+//       brdElements = curBoard.display();
+//       System.out.println(boardToString(brdElements));
+//       System.out.println();
+//       System.out.println();
+//    }
+    // Return an integer that is larger for boards that are better for player MAX
+    int result = BoardValue (startBoard, 1, 0, -999999999, 999999999,  new ArtificialBoard(new ArrayList()));
+    System.out.println(result);
+    
+
     /*
     try {
       ArtificialPlayer p = new ArtificialPlayer(playerName);
@@ -200,7 +206,62 @@ import java.net.*;
     
     //ourBoard.getChildren(playerRegistration, index);
   }
-  
+    //simple BoardEval to test BoardValue function. Not intended as final 
+    //prodcut
+    public static int BoardEval(ArtificialBoard b){
+        //System.out.println("************************");
+        //printBoard(b.board);
+        
+        for(int i = 0; i <b.board.size();i++ ){
+            if(b.board.get(i).piece == -100)
+                b.value++;
+            if(b.board.get(i).piece == 100)
+                b.value--;
+        }
+        //System.out.println(b.value);
+        //System.out.println("************************");
+        return b.value;
+    }
+   
+    /* Given board initBrd, return the alphabeta value of it, and place the move that
+    * renders this value in <best>.
+    */
+    public static int BoardValue(ArtificialBoard initBrd, int p, int ply, 
+                                      int alpha, int beta, ArtificialBoard best)
+    {
+        System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
+        if (ply >= MAX_PLY) // At bottom of search tree
+            return BoardEval(initBrd);
+        
+        // Else we've got to look at the descendants
+        
+        ArrayList<ArtificialBoard> boards = ReachableBoards(initBrd.getBoard(), initBrd, p);
+        
+        if(boards.isEmpty())
+            return best.value;		// ???What to do if boards is empty???
+        for(int b = 0; b < boards.size();b++) {
+            int val = BoardValue(boards.get(b), 0, ply+1, alpha, beta, best); 
+            
+            if (p == PLAYER_MAX){
+                if (val > alpha) {
+                    alpha = val; 
+                    best = boards.get(b);
+                }
+                if (alpha >= beta)
+                    return alpha;	// Prune!  Alpha-cutoff
+            }
+            else {			// MIN's turn
+                if (val < beta) {
+                    beta = val; 
+                    best = boards.get(b);
+                }
+                if (alpha >= beta)
+                    return beta;	// Prune!  Beta-cutoff
+            }
+        }
+        return (p == PLAYER_MAX ? alpha : beta);
+        
+    } 
   public static void printBoard(ArrayList<Square> board){
     System.out.println(boardToString(display(board)));
   }
@@ -265,7 +326,7 @@ import java.net.*;
     
     return reachable;
   }
-    public static ArrayList<String> generate(ArrayList<Square> state, ArtificialBoard board){
+  public static ArrayList<String> generate(ArrayList<Square> state, ArtificialBoard board){
       int size = state.size();
       ArrayList<String> ret = new ArrayList<String>();
             

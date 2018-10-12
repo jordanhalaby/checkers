@@ -6,9 +6,9 @@ public class ArtificialBoard{
 
    public int numRow = 8;
    public int numCol = 8;
+   public int value = 0;
    
    ArtificialBoard parent;
-   
    
    
    ArrayList<Square> board = new ArrayList();
