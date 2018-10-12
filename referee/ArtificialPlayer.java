@@ -174,8 +174,8 @@ import java.net.*;
        System.out.println(boardToString(brdElements));
        System.out.println();
        System.out.println();
-
     }
+    
     /*
     try {
       ArtificialPlayer p = new ArtificialPlayer(playerName);
@@ -200,6 +200,20 @@ import java.net.*;
     
     //ourBoard.getChildren(playerRegistration, index);
   }
+  
+  public static void printBoard(ArrayList<Square> board){
+    System.out.println(boardToString(display(board)));
+  }
+  
+  public static int[] display(ArrayList<Square> board){
+    int[] places = new int[33];
+
+    for(int i =0; i < board.size(); i++){
+       places[i] = board.get(i).piece;
+    }
+    return places;
+  }
+  
    /**
    * Here's your chance to be imaginative.
    *
@@ -208,9 +222,9 @@ import java.net.*;
   public String getName() throws java.rmi.RemoteException {
     return name;
   }
-  public static ArrayList<ArtificialBoard> ReachableBoards(ArrayList<Square> state, ArtificialBoard board, int wb){
-  ArrayList<String> children = generate(state, board);
-   
+  
+  public static ArrayList<ArtificialBoard> ReachableBoards(ArrayList<Square> state, ArtificialBoard mainBoard, int wb){
+    ArrayList<String> children = generate(state, mainBoard);
     ArrayList<ArtificialBoard> reachable = new ArrayList<ArtificialBoard>();
     
     
@@ -218,11 +232,11 @@ import java.net.*;
          String child = children.get(c);
          String[] pieces = child.split("\\W+");
          
-         ArrayList<Square> Board = new ArrayList<Square>();
+         ArrayList<Square> BoardSquares = new ArrayList<Square>();
          Square dummy = new Square();
          dummy.index =0;
          dummy.piece =0;
-         Board.add(dummy);
+         BoardSquares.add(dummy);
          for(int p=1; p<pieces.length; p++){
             String curPiece = pieces[p];
             int temp;
@@ -240,11 +254,11 @@ import java.net.*;
             Square sq = new Square();
             sq.index=p;
             sq.piece=temp;
-            Board.add(sq);
-            
+            BoardSquares.add(sq);  
          }
          
-         ArtificialBoard tempBoard = new ArtificialBoard(Board);
+         ArtificialBoard tempBoard = new ArtificialBoard(BoardSquares);
+         tempBoard.parent = mainBoard;
          reachable.add(tempBoard);
          
     }

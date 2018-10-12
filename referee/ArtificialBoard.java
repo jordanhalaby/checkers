@@ -14,6 +14,7 @@ public class ArtificialBoard{
    ArrayList<Square> board = new ArrayList();
    //Generate initial board
    public ArtificialBoard(ArrayList<Square> list){
+      parent = null;
       board = list;
    }
    public int getIndex(int row, int col){
