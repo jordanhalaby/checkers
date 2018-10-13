@@ -142,21 +142,63 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 
     //simple BoardEval to test BoardValue function. Not intended as final 
     //prodcut
-    public static int BoardEval(ArtificialBoard b) {
-        //System.out.println("************************");
-        //printBoard(b.board);
+    private static int BoardEval(ArtificialBoard b)
+    {
+        ArrayList<Square> squares = b.board;
+        int black = 0;
+        int white = 0;
+        int eval = 0;
 
-        for (int i = 0; i < b.board.size(); i++) {
-            if (b.board.get(i).piece == -100) {
-                b.value++;
+        //generate value of each piece on the board
+        for (int i=0; i < squares.size(); i++)
+        {
+            //piece is black pawn
+            if (squares.get(i).piece == 100)
+            {
+                int row = b.getRow(squares.get(i).index) * 8;
+
+                //value of piece is innately 8
+                //pieces that are further up the board have a higher value
+                black = black + 8 + (row/8);
             }
-            if (b.board.get(i).piece == 100) {
-                b.value--;
+
+            //piece is black king
+            if (squares.get(i).piece == 200)
+            {
+                //value of king is always 16
+                black = black + 16;
+            }
+
+            //piece is white pawn
+            if (squares.get(i).piece == -100)
+            {
+                int row = b.getRow(squares.get(i).index) * 8;
+
+                //value of piece is innately 8
+                //pieces that are further up the board have a higher value
+                white = white + 8 + (row/8);
+            }
+
+            //piece is white king
+            if (squares.get(i).piece == -200)
+            {
+                //value of king is always 16
+                white = white + 16;
             }
         }
-        //System.out.println(b.value);
-        //System.out.println("************************");
-        return b.value;
+
+        //player is white
+        if (wb == 1)
+        {
+            eval = white - black;
+        }
+
+        //player is black
+        if (wb == 2)
+        {
+            eval = black - white;
+        }
+        return eval;
     }
 
     /**
@@ -166,8 +208,8 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     public static int BoardValue(ArtificialBoard initBrd, int p, int ply,
             int alpha, int beta) {
         wb = p;
-        //System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
-        //printBoard(initBrd.board);
+//        System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
+//        printBoard(initBrd.board);
         if (ply >= MAX_PLY) // At bottom of search tree
         {
             return BoardEval(initBrd);
@@ -190,10 +232,11 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
                 if (val > alpha) {
                     alpha = val;
                     best = boards.get(b);
+                    //System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
                     //ArtificialPlayer.best = best;
                 }
                 if (alpha >= beta) {
-                    
+                    //System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
                     return alpha;	// Prune!  Alpha-cutoff
                 }
             } else {			// MIN's turn
@@ -201,9 +244,11 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
                     beta = val;
                     best = boards.get(b);
                     //ArtificialPlayer.best = best;
+                    //System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
                 }
                 if (alpha >= beta) {
                     //printBoard(best.board);
+                    //System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
                     return beta;	// Prune!  Beta-cutoff
                 }
             }
@@ -402,10 +447,11 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
         // Return an integer that is larger for boards that are better for player MAX
         ArtificialBoard startBoard = new ArtificialBoard();
         wb = 1;
-//        ArtificialBoard best = new ArtificialBoard();
-//        ArtificialPlayer.best = best;
-        //printBoard(startBoard.board);
-        int result = BoardValue (startBoard, 1, 0, -999999999, 999999999);
+        PLAYER_MAX = wb;
+
+        int result = BoardValue (startBoard, wb, 0, -999999999, 999999999);
+        
+        
         System.out.println(result);
         while(ArtificialPlayer.best != null) {
             if(ArtificialPlayer.best.parent.equals(startBoard)) 
@@ -413,6 +459,8 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
             ArtificialPlayer.best = ArtificialPlayer.best.parent;
         }
         printBoard(ArtificialPlayer.best.board);
+
+        
         //result = BoardValue (best, 1, 0, result, 999999999);
         //System.out.println(result);
         //printBoard(best.board);
