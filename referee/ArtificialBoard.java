@@ -28,7 +28,20 @@ public class ArtificialBoard {
             board.add(sq);
         }
     }
-
+    public ArtificialBoard(int [] boardToArrayList){
+    /* the purpose of this constructor is to convert boardToArrayList to 
+        ArrayList<Square> board which our AI uses to function
+        */
+        //System.out.println("boardToArrayList " + Arrays.toString(boardToArrayList));
+        parent = null;
+        for (int i = 0; i <= 32; i++) {
+            Square sq = new Square();
+            sq.piece = boardToArrayList[i];
+            sq.index = i;
+            board.add(sq);
+        }
+        
+    }
     public ArtificialBoard(ArrayList<Square> list) {
         parent = null;
         board = list;
