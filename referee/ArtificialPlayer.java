@@ -262,8 +262,8 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     public static int BoardValue(ArtificialBoard initBrd, int p, int ply,
             int alpha, int beta) {
         wb = p;
-        System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
-        printBoard(initBrd.board);
+        //System.out.println("(Alpha, Beta, ply) " + alpha + ", " + beta+ ", " + ply);
+        //printBoard(initBrd.board);
         if (ply >= MAX_PLY) // At bottom of search tree
         {
             return BoardEval(initBrd);
@@ -271,7 +271,13 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 
         // Else we've got to look at the descendants
         ArrayList<ArtificialBoard> boards = ReachableBoards(initBrd.getBoard(), initBrd, p);
-
+        System.out.println("Parent Board (ply) " + ply);
+        printBoard(initBrd.board);
+        System.out.println("Child Boards (ply) " + ply);
+        for(int i = 0; i < boards.size(); i++){
+            printBoard(boards.get(i).board);
+            System.out.println();
+        }
         if (boards.isEmpty()) { //no reachable moves you lose.
             //best = boards[0];// ???What to do if boards is empty???
             best = boards.get(0);
