@@ -413,13 +413,22 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
                     String currentPair = pairs[j];
 
                     String[] comps = currentPair.split("--");
-
+                    
                     int start = Integer.parseInt(comps[0]);
                     int end = Integer.parseInt(comps[1]);
-
+                    
+                    //Sets spot that checker moved from as empty
                     myState[start] = start - 1;
+                    
+                    //Sets spot that checker moved to as occupied by that piece
                     myState[end] = piece;
-
+                    
+                    //Eats all jumped pieces
+                    for (int k=2; k < comps.length; k++)
+                    {
+                    	int jumpedIndex = Integer.parseInt(comps[k]);
+                    	myState[jumpedIndex] = jumpedIndex - 1;
+                    }
                     String layout = boardToString(myState);
                     //System.out.println(layout);
 
@@ -511,7 +520,6 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
         ArtificialBoard startBoard = new ArtificialBoard(temp);
         //wb = 1;
         PLAYER_MAX = wb = 2;
-
         int result = BoardValue (startBoard, wb, 0, -999999999, 999999999);
         //System.out.println(" ( wb, PLAYER_MAX ) ( " + wb + ", " + PLAYER_MAX + " )");
         wb = PLAYER_MAX;

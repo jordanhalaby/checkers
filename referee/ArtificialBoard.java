@@ -124,8 +124,7 @@ public class ArtificialBoard {
 
                                 if (newPieceJump != -100 && newPieceJump != 100) {
                                     retjump = retjump + index + PairDelimit + newIndexJump
-                                            + SetDelimit;
-                                    return retjump;
+                                           + PairDelimit + newIndexLeft + SetDelimit;
                                 }
                             }
                         }
@@ -152,9 +151,8 @@ public class ArtificialBoard {
                                 int newPieceJump = board.get(newIndexJump).piece;
 
                                 if (newPieceJump != -100 && newPieceJump != 100) {
-                                    retjump = retjump + index + PairDelimit + newIndexJump
-                                            + SetDelimit;
-                                    return retjump;
+                                	retjump = retjump + index + PairDelimit + newIndexJump
+                                            + PairDelimit + newIndexRight + SetDelimit;
                                 }
                             }
                         }
@@ -192,9 +190,8 @@ public class ArtificialBoard {
                                 int newPieceJump = board.get(newIndexJump).piece;
 
                                 if (newPieceJump != -100 && newPieceJump != 100) {
-                                    retjump = retjump + index + PairDelimit + newIndexJump
-                                            + SetDelimit;
-                                    return retjump;
+                                	retjump = retjump + index + PairDelimit + newIndexJump
+                                            + PairDelimit + newIndexLeft + SetDelimit;
                                 }
                                 if (newPiece != -100 && newPiece != 100) {
                                     ret = ret + index + PairDelimit + newIndexLeft
@@ -227,9 +224,8 @@ public class ArtificialBoard {
                                 int newPieceJump = board.get(newIndexJump).piece;
 
                                 if (newPieceJump != -100 && newPieceJump != 100) {
-                                    retjump = retjump + index + PairDelimit + newIndexJump
-                                            + SetDelimit;
-                                    return retjump;
+                                	retjump = retjump + index + PairDelimit + newIndexJump
+                                            + PairDelimit + newIndexRight + SetDelimit;
                                 }
 
                                 if (newPiece != -100 && newPiece != 100) {
