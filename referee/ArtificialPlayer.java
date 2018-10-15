@@ -271,13 +271,13 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 
         // Else we've got to look at the descendants
         ArrayList<ArtificialBoard> boards = ReachableBoards(initBrd.getBoard(), initBrd, p);
-        System.out.println("Parent Board (ply, player) (" + ply + ", " + (p == 1? "White )":"Black )"));
-        printBoard(initBrd.board);
-        System.out.println("Child Boards (ply, player) (" + ply  + ", " + (p == 1? "White )":"Black )"));
-        for(int i = 0; i < boards.size(); i++){
-            printBoard(boards.get(i).board);
-            System.out.println();
-        }
+        //System.out.println("Parent Board (ply, player) (" + ply + ", " + (p == 1? "White )":"Black )"));
+        //printBoard(initBrd.board);
+        //System.out.println("Child Boards (ply, player) (" + ply  + ", " + (p == 1? "White )":"Black )"));
+//        for(int i = 0; i < boards.size(); i++){
+//            printBoard(boards.get(i).board);
+//            System.out.println();
+//        }
         if (boards.isEmpty()) { //no reachable moves you lose.
             //best = boards[0];// ???What to do if boards is empty???
             best = boards.get(0);
@@ -466,7 +466,7 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
      */
     public static void main(String[] args) {
         
-       /*
+       
         if (args.length != 2 || (!args[0].equals("1") && !args[0].equals("2"))) {
             System.err.println("Usage: java HumanPlayer X FOO, where X is 1 for registering the agent as 'first',\n"
                     + "  2 for registering it as 'second'.  The second argument (FOO)is the name of the agent.\n");
@@ -488,20 +488,20 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
         } catch (RemoteException ex) {
             System.err.println(ex);
         } 
-        */
+        /**/
         //runGame(args);
         //debugMethod(new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100});
-         int []temp = new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
-        ArtificialBoard startBoard = new ArtificialBoard(temp);
-        System.out.println("----------------");
-        printBoard(startBoard.board);
-        System.out.println("----------------");
-        //printBoard(startBoard.getBoard());
-        wb = 1;
-        ArrayList<ArtificialBoard> boards = ReachableBoards(startBoard.getBoard(), startBoard, wb);
-        //System.out.println(boards.size());
-        printBoard(boards.get(0).board);
-        System.out.println("----------------");
+//         int []temp = new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
+//        ArtificialBoard startBoard = new ArtificialBoard(temp);
+//        System.out.println("----------------");
+//        printBoard(startBoard.board);
+//        System.out.println("----------------");
+//        //printBoard(startBoard.getBoard());
+//        wb = 1;
+//        ArrayList<ArtificialBoard> boards = ReachableBoards(startBoard.getBoard(), startBoard, wb);
+//        //System.out.println(boards.size());
+//        printBoard(boards.get(0).board);
+//        System.out.println("----------------");
         //debugMethod(1, new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100});
 //    ArrayList<Square> StartList = new ArrayList();
 //    
@@ -578,12 +578,9 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
         //int [] temp = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
         ArtificialBoard startBoard = new ArtificialBoard(temp);
         //wb = 1;
-<<<<<<< HEAD
         PLAYER_MAX = wb = 2;
-=======
         PLAYER_MAX = wb = player;
 
->>>>>>> f1a5bc4a767e3574a8cef2699f66c0ab6b304460
         int result = BoardValue (startBoard, wb, 0, -999999999, 999999999);
         //System.out.println(" ( wb, PLAYER_MAX ) ( " + wb + ", " + PLAYER_MAX + " )");
         wb = PLAYER_MAX;
