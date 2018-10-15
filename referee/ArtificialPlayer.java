@@ -449,6 +449,7 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
      */
     public static void main(String[] args) {
         /*
+       */
         if (args.length != 2 || (!args[0].equals("1") && !args[0].equals("2"))) {
             System.err.println("Usage: java HumanPlayer X FOO, where X is 1 for registering the agent as 'first',\n"
                     + "  2 for registering it as 'second'.  The second argument (FOO)is the name of the agent.\n");
@@ -469,8 +470,7 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
             System.err.println(ex);
         } catch (RemoteException ex) {
             System.err.println(ex);
-        }
-       */ 
+        } 
         
 //    ArrayList<Square> StartList = new ArrayList();
 //    
@@ -506,7 +506,7 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 //    }
 
         // Return an integer that is larger for boards that are better for player MAX
-/******************************************************************************/     
+/******************************************************************************    
         int [] temp = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
         ArtificialBoard startBoard = new ArtificialBoard(temp);
         //wb = 1;
