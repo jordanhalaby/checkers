@@ -7,7 +7,7 @@ public class ArtificialBoard {
     public int numRow = 8;
     public int numCol = 8;
     public int value = 0;
-
+    public boolean isJump;
     ArtificialBoard parent;
 
     ArrayList<Square> board = new ArrayList();
@@ -90,6 +90,7 @@ public class ArtificialBoard {
     public String getOpenSquares(int wb, int index) {
         // check if index space is white
         //System.out.println("wb, index ---> " + wb + ", " + index );
+        isJump = false;
         int currPiece = board.get(index).piece;
 
         int row = getRow(index);
@@ -125,6 +126,7 @@ public class ArtificialBoard {
                                 if (newPieceJump != -100 && newPieceJump != 100) {
                                     retjump = retjump + index + PairDelimit + newIndexJump
                                            + PairDelimit + newIndexLeft + SetDelimit;
+                                    isJump = true;
                                 }
                             }
                         }
@@ -153,6 +155,9 @@ public class ArtificialBoard {
                                 if (newPieceJump != -100 && newPieceJump != 100) {
                                 	retjump = retjump + index + PairDelimit + newIndexJump
                                             + PairDelimit + newIndexRight + SetDelimit;
+                                        
+                                        isJump = true;
+//                                        System.out.println(retjump+ "," + isJump);
                                 }
                             }
                         }
@@ -192,6 +197,7 @@ public class ArtificialBoard {
                                 if (newPieceJump != -100 && newPieceJump != 100) {
                                 	retjump = retjump + index + PairDelimit + newIndexJump
                                             + PairDelimit + newIndexLeft + SetDelimit;
+                                        isJump = true;
                                 }
                                 if (newPiece != -100 && newPiece != 100) {
                                     ret = ret + index + PairDelimit + newIndexLeft
@@ -226,6 +232,7 @@ public class ArtificialBoard {
                                 if (newPieceJump != -100 && newPieceJump != 100) {
                                 	retjump = retjump + index + PairDelimit + newIndexJump
                                             + PairDelimit + newIndexRight + SetDelimit;
+                                        isJump = true;
                                 }
 
                                 if (newPiece != -100 && newPiece != 100) {
