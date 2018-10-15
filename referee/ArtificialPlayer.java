@@ -271,9 +271,9 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 
         // Else we've got to look at the descendants
         ArrayList<ArtificialBoard> boards = ReachableBoards(initBrd.getBoard(), initBrd, p);
-        System.out.println("Parent Board (ply) " + ply);
+        System.out.println("Parent Board (ply, player) (" + ply + ", " + (p == 1? "White )":"Black )"));
         printBoard(initBrd.board);
-        System.out.println("Child Boards (ply) " + ply);
+        System.out.println("Child Boards (ply, player) (" + ply  + ", " + (p == 1? "White )":"Black )"));
         for(int i = 0; i < boards.size(); i++){
             printBoard(boards.get(i).board);
             System.out.println();
@@ -341,8 +341,13 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 
     public static ArrayList<ArtificialBoard> ReachableBoards(ArrayList<Square> state, ArtificialBoard mainBoard, int wb) {
         ArrayList<String> children = generate(state, mainBoard);
+//        for(int i = 0; i < children.size(); i++){
+//            System.out.println("++++++++++++++++");
+//            System.out.println(children.get(i));
+//            System.out.println("++++++++++++++++");
+//        }
         ArrayList<ArtificialBoard> reachable = new ArrayList<ArtificialBoard>();
-
+       
         for (int c = 0; c < children.size(); c++) {
             String child = children.get(c);
             String[] pieces = child.split("\\W+");
@@ -380,7 +385,10 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     }
 
     public static ArrayList<String> generate(ArrayList<Square> state,
-            ArtificialBoard board) {
+                                                        ArtificialBoard board) {
+//        System.out.println("****************");
+//        printBoard(board.board);
+//        System.out.println("****************");
         int size = state.size();
         ArrayList<String> ret = new ArrayList<String>();
 
@@ -448,8 +456,8 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
      * <code>java -Djava.security.policy=permit.txt referee.HumanPlayer 1 "Fraser"</code>
      */
     public static void main(String[] args) {
-        /*
-       */
+        
+       /*
         if (args.length != 2 || (!args[0].equals("1") && !args[0].equals("2"))) {
             System.err.println("Usage: java HumanPlayer X FOO, where X is 1 for registering the agent as 'first',\n"
                     + "  2 for registering it as 'second'.  The second argument (FOO)is the name of the agent.\n");
@@ -471,7 +479,21 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
         } catch (RemoteException ex) {
             System.err.println(ex);
         } 
-        
+        */
+        //runGame(args);
+        //debugMethod(new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100});
+         int []temp = new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
+        ArtificialBoard startBoard = new ArtificialBoard(temp);
+        System.out.println("----------------");
+        printBoard(startBoard.board);
+        System.out.println("----------------");
+        //printBoard(startBoard.getBoard());
+        wb = 1;
+        ArrayList<ArtificialBoard> boards = ReachableBoards(startBoard.getBoard(), startBoard, wb);
+        //System.out.println(boards.size());
+        printBoard(boards.get(0).board);
+        System.out.println("----------------");
+        //debugMethod(1, new int[]{0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100});
 //    ArrayList<Square> StartList = new ArrayList();
 //    
 //     for(int i=0; i<=32; i++){
@@ -505,25 +527,8 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
 //       System.out.println();
 //    }
 
-        // Return an integer that is larger for boards that are better for player MAX
-/******************************************************************************    
-        int [] temp = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
-        ArtificialBoard startBoard = new ArtificialBoard(temp);
-        //wb = 1;
-        PLAYER_MAX = wb = 2;
 
-        int result = BoardValue (startBoard, wb, 0, -999999999, 999999999);
-        //System.out.println(" ( wb, PLAYER_MAX ) ( " + wb + ", " + PLAYER_MAX + " )");
-        wb = PLAYER_MAX;
-        
-        System.out.println(result);
-        while(ArtificialPlayer.best != null) {
-            if(ArtificialPlayer.best.parent.equals(startBoard)) 
-                break;
-            ArtificialPlayer.best = ArtificialPlayer.best.parent;
-        }
-        printBoard(ArtificialPlayer.best.board);
-/******************************************************************************/
+
         
         //result = BoardValue (best, 1, 0, result, 999999999);
         //System.out.println(result);
@@ -536,5 +541,46 @@ public class ArtificialPlayer extends java.rmi.server.UnicastRemoteObject implem
     int col = ourBoard.getCol(index);
     System.out.println(ourBoard.getIndex(row, col));*/
         //ourBoard.getChildren(playerRegistration, index);
+    }
+    private static void runGame(String[] args){
+        if (args.length != 2 || (!args[0].equals("1") && !args[0].equals("2"))) {
+            System.err.println("Usage: java HumanPlayer X FOO, where X is 1 for registering the agent as 'first',\n"
+                    + "  2 for registering it as 'second'.  The second argument (FOO)is the name of the agent.\n");
+            System.exit(-1);
+        }
+
+        String playerName = args[1];
+        String playerRegistration = (args[0].equals("1") ? "first" : "second");
+        PLAYER_MAX = wb = (args[0].equals("1") ? 1 : 2);
+        System.setSecurityManager(new RMISecurityManager());
+
+        try {
+            ArtificialPlayer p = new ArtificialPlayer(playerName);
+            Naming.rebind(playerRegistration, p);
+            System.out.println("Player " + playerRegistration + "(named " + playerName + ") is waiting for the referee");
+        } catch (MalformedURLException ex) {
+            System.err.println("Bad URL for RMI server");
+            System.err.println(ex);
+        } catch (RemoteException ex) {
+            System.err.println(ex);
+        } 
+    }
+    private static void debugMethod(int player,int [] temp){
+        //int [] temp = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100, 0, 0, 0, -100, -100, -100, -100, 0, -100, -100, -100, -100, -100, -100, -100, -100};
+        ArtificialBoard startBoard = new ArtificialBoard(temp);
+        //wb = 1;
+        PLAYER_MAX = wb = player;
+
+        int result = BoardValue (startBoard, wb, 0, -999999999, 999999999);
+        //System.out.println(" ( wb, PLAYER_MAX ) ( " + wb + ", " + PLAYER_MAX + " )");
+        wb = PLAYER_MAX;
+        
+        System.out.println(result);
+        while(ArtificialPlayer.best != null) {
+            if(ArtificialPlayer.best.parent.equals(startBoard)) 
+                break;
+            ArtificialPlayer.best = ArtificialPlayer.best.parent;
+        }
+        printBoard(ArtificialPlayer.best.board);
     }
 }
