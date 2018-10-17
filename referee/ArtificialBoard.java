@@ -110,8 +110,8 @@ public class ArtificialBoard {
                 int colLeft = col - 1;
                 int colRight = col + 1;
 
-                if (newRow >= 0) {
-                    if (colLeft >= 0) {
+                if (newRow > 0) {
+                    if (colLeft > 0) {
                         int newIndexLeft = getIndex(newRow, colLeft);
                         newPiece = board.get(newIndexLeft).piece;
 
@@ -139,7 +139,7 @@ public class ArtificialBoard {
                         //System.out.println("No left moves");
                     }
 
-                    if (colRight <= 7) {
+                    if (colRight < 7) {
                         int newIndexRight = getIndex(newRow, colRight);
                         newPiece = board.get(newIndexRight).piece;
 
@@ -181,8 +181,8 @@ public class ArtificialBoard {
                 int colLeft = col - 1;
                 int colRight = col + 1;
 
-                if (newRow <= 7) {
-                    if (colLeft >= 0) {
+                if (newRow < 7) {
+                    if (colLeft > 0) {
                         int newIndexLeft = getIndex(newRow, colLeft);
                         newPiece = board.get(newIndexLeft).piece;
 
@@ -215,7 +215,7 @@ public class ArtificialBoard {
                         //System.out.println("No left moves");
                     }
 
-                    if (colRight <= 7) {
+                    if (colRight < 7) {
                         int newIndexRight = getIndex(newRow, colRight);
                         newPiece = board.get(newIndexRight).piece;
 
